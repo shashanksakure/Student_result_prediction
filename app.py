@@ -3,115 +3,119 @@ import numpy as np
 import pandas as pd
 import pickle
 
-# --- EXECUTIVE THEME & PAGE INITIALIZATION ---
+# --- PRESENTATION CONFIGURATION ---
 st.set_page_config(
-    page_title="Institutional Analytics & Risk Platform",
-    page_icon="📊",
+    page_title="Predictive Insights Platform",
+    page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom Corporate CSS for Business Meetings
+# --- PREMIUM EXECUTIVE STYLING (CSS) ---
 st.markdown("""
     <style>
-        /* Modern Background & Typography */
+        /* Base page styling */
         .main {
-            background-color: #fcfdfe;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         
-        /* High-impact presentation banner */
-        .hero-banner {
-            background: linear-gradient(135deg, #0f172a 0%, #0d9488 100%);
+        /* High-contrast dashboard header */
+        .presentation-title {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             padding: 2.5rem;
             border-radius: 16px;
             color: white;
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+            border-left: 8px solid #0ea5e9;
         }
         
         /* Section Dividers */
-        .section-header {
+        .metric-heading {
             color: #1e293b;
             font-weight: 700;
-            border-bottom: 3px solid #0d9488;
+            font-size: 1.4rem;
+            border-bottom: 2px solid #cbd5e1;
             padding-bottom: 0.5rem;
             margin-top: 1.5rem;
             margin-bottom: 1.5rem;
-            font-size: 1.4rem;
         }
-
-        /* Result Callouts */
-        .result-box-yes {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        
+        /* Status Card Layouts */
+        .status-card-yes {
+            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
             color: white;
-            padding: 2rem;
+            padding: 2.2rem;
             border-radius: 12px;
             text-align: center;
-            font-size: 1.75rem;
-            font-weight: 700;
-            box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.4);
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
         }
-        .result-box-no {
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        
+        .status-card-no {
+            background: linear-gradient(135deg, #be123c 0%, #f43f5e 100%);
             color: white;
-            padding: 2rem;
+            padding: 2.2rem;
             border-radius: 12px;
             text-align: center;
-            font-size: 1.75rem;
-            font-weight: 700;
-            box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.4);
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 20px -5px rgba(244, 63, 94, 0.4);
         }
     </style>
 """, unsafe_with_html=True)
 
-# --- MODEL INGESTION ---
+# --- BINARY DATA INGESTION ---
 @st.cache_resource
-def load_predictive_model():
+def load_serialized_model():
     try:
         with open("svm_model.pkl", "rb") as f:
             return pickle.load(f)
     except FileNotFoundError:
-        # Fallback if renamed to model.pkl
         try:
             with open("model.pkl", "rb") as f:
                 return pickle.load(f)
         except FileNotFoundError:
-            st.error("⚠️ Model file not found. Ensure either 'svm_model.pkl' or 'model.pkl' is in the root directory.")
+            st.error("❌ Critical: Serialization file ('svm_model.pkl' / 'model.pkl') not detected in the root path.")
             return None
 
-model = load_predictive_model()
+model = load_serialized_model()
 
-# --- HERO BANNER DISPLAY ---
+# --- HEADER PRESENTATION BANNER ---
 st.markdown("""
-    <div class="hero-banner">
-        <h1 style='margin:0; font-size: 2.6rem; font-weight: 800; letter-spacing: -0.5px;'>Student Success & Performance Insights</h1>
-        <p style='margin:8px 0 0 0; opacity: 0.85; font-size: 1.15rem; font-weight: 400;'>Predictive Core Engine powered by Support Vector Classification</p>
+    <div class="presentation-title">
+        <h1 style='margin:0; font-size: 2.6rem; font-weight: 800;'>Executive Performance Risk Suite</h1>
+        <p style='margin:6px 0 0 0; opacity: 0.85; font-size: 1.15rem; font-weight: 400;'>Core Engine: Support Vector Machine (RBF Kernel Variant)</p>
     </div>
 """, unsafe_with_html=True)
 
 if model:
-    st.markdown("<div class='section-header'>📊 Profile & Operational Metrics Input</div>", unsafe_with_html=True)
+    st.markdown("<div class='metric-heading'>📋 Target Feature Parameter Array</div>", unsafe_with_html=True)
     
-    # 3x3 Form Grid for seamless data entry during live demos
+    # Clean 3x3 Grid Layout mapping precisely to model signatures
     col1, col2, col3 = st.columns(3)
+    
     with col1:
-        gender = st.selectbox("Gender Target", ["Male", "Female"])
-        study_hours = st.slider("Weekly Study Hours", 0, 100, 25)
+        gender = st.selectbox("Gender Demographic", ["Male", "Female"])
+        study_hours = st.slider("Weekly Study Hours Allocation", 0, 168, 20)
         extracurricular = st.selectbox("Extracurricular Engagement", ["Yes", "No"])
         
     with col2:
-        age = st.number_input("Age Profile", min_value=12, max_value=100, value=18)
-        attendance_rate = st.slider("Attendance Rate (%)", 0, 100, 85)
-        previous_score = st.slider("Historical Score (Previous Term)", 0, 100, 70)
+        age = st.number_input("Age Cohort", min_value=5, max_value=100, value=18)
+        attendance_rate = st.slider("Institutional Attendance Rate (%)", 0, 100, 92)
+        previous_score = st.slider("Historical Baseline Score", 0, 100, 75)
         
     with col3:
-        parent_edu = st.selectbox("Parent Education Level", ["High School", "Associate's Degree", "Bachelor's Degree", "Master's Degree", "PhD"])
-        internet_access = st.selectbox("Reliable Internet Access?", ["Yes", "No"])
-        final_score = st.slider("Current Assessment Score", 0, 100, 72)
+        parent_edu = st.selectbox("Parent Educational Tier", ["High School", "Associate's Degree", "Bachelor's Degree", "Master's Degree", "PhD"])
+        internet_access = st.selectbox("Broadband Network Connectivity", ["Yes", "No"])
+        final_score = st.slider("Current Milestone Evaluation Score", 0, 100, 78)
 
-    # DataFrame formatting to perfectly align with model's expected inputs
-    raw_payload = pd.DataFrame([{
+    # Building structural dataframe mirroring model features
+    features_payload = pd.DataFrame([{
         'gender': gender,
         'age': age,
         'study_hours_per_week': study_hours,
@@ -125,43 +129,44 @@ if model:
 
     st.markdown("<br>", unsafe_with_html=True)
     
-    # --- ANALYSIS INFERENCE ---
-    _, middle_btn_col, _ = st.columns([1, 1, 1])
-    with middle_btn_col:
-        trigger_prediction = st.button("🚀 Evaluate Student Profile", use_container_width=True)
+    # Centered interactive activation trigger
+    _, btn_center, _ = st.columns([1, 1, 1])
+    with btn_center:
+        execute_inference = st.button("🔮 Compute Predictive Inference", use_container_width=True)
 
-    if trigger_prediction:
-        st.markdown("<div class='section-header'>🏁 Executive Analytics Summary</div>", unsafe_with_html=True)
+    if execute_inference:
+        st.markdown("<div class='metric-heading'>📊 Analytical Classification Summary</div>", unsafe_with_html=True)
         
         try:
-            # Predict execution
-            prediction_output = model.predict(raw_payload)[0]
+            # Execute model classification array 
+            raw_prediction = model.predict(features_payload)[0]
+            prediction_str = str(raw_prediction).strip().lower()
             
-            output_col, metrics_col = st.columns([2, 1])
+            ui_col, stats_col = st.columns([2, 1])
             
-            with output_col:
-                # Dynamic matching based on model's internal ['No', 'Yes'] configuration
-                if str(prediction_output).strip().lower() in ['yes', '1']:
+            with ui_col:
+                if prediction_str in ['yes', '1']:
                     st.markdown("""
-                        <div class="result-box-yes">
-                            🎯 EVALUATION STATUS: STABLE / SUCCESS PREDICTED (YES)
+                        <div class="status-card-yes">
+                            🎯 ANALYTICAL OUTCOME: STABLE CRITERIA ACHIEVED (YES)
                         </div>
                     """, unsafe_with_html=True)
                 else:
                     st.markdown("""
-                        <div class="result-box-no">
-                            ⚠️ EVALUATION STATUS: INTERVENTION RECOMMENDED (NO)
+                        <div class="status-card-no">
+                            ⚠️ ANALYTICAL OUTCOME: ESCALATION / RISK TRIGGERED (NO)
                         </div>
                     """, unsafe_with_html=True)
             
-            with metrics_col:
-                # Provide confidence fallback metrics or state visualization
+            with stats_col:
+                # Fallback parameters for models missing native multi-class probabilities
                 if hasattr(model, "predict_proba"):
-                    confidence_pct = np.max(model.predict_proba(raw_payload)[0]) * 100
-                    st.metric(label="Algorithm Certainty Level", value=f"{confidence_pct:.1f}%")
+                    confidence_matrix = model.predict_proba(features_payload)[0]
+                    top_confidence = np.max(confidence_matrix) * 100
+                    st.metric(label="Statistical Core Certainty", value=f"{top_confidence:.2f}%")
                 else:
-                    st.metric(label="Core Execution Engine", value="Verified Fit", delta="SVC RBF Kernel")
+                    st.metric(label="Algorithmic Decision Matrix", value="Verified Fit", delta="SVC Engine OVR")
                     
-        except Exception as err:
-            st.error(f"Data Pipeline Configuration Error: {err}")
-            st.info("💡 Note: Ensure your training data transforms (like OneHotEncoders) match the raw strings if you didn't wrap the pipeline.")
+        except Exception as error_context:
+            st.error(f"Execution Error Encountered: {str(error_context)}")
+            st.info("💡 Presentation Note: Ensure input strings exactly track the training text labels if label encoding wasn't natively baked into your pickling process.")
